@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <style>
+        #headblock{
+            width : 100%;
+            padding : 50px;
+            color : white ;
+            background-color: seagreen;
+            align-content : center;
+            font-size : x-large;
+            text-align : center;
+        }
+        #block {
+            min-height : 200px;
+            width: 47%;
+            border: solid;
+            float: left;
+            margin: 10px;
+            padding : 10px;
+            background-color : greenyellow ;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="todoCtrl">
+    <div id="headblock">
+        
+        <h1>ToDo List</h1>
+        </div>
+
+    <div id="block">
+        <h1>ToDo List</h1>
+
+        <form ng-submit="todoAdd()">
+            <input type="text" ng-model="todoInput" size="50" placeholder="Add New">
+            <input type="submit" value="Add New">
+        </form>
+
+        <br>
+
+        <div ng-repeat="item in todoList">
+            <input type="checkbox" ng-model="item.done"> <span ng-bind="item.text"></span>
+        </div>
+
+        <p> <button ng-click="move()"> Work Done</button></p>
+
+
+    </div>
+
+        <div id="block">
+            <h1>Work Done List</h1>
+
+            <div ng-repeat="item in doneList">
+                <input type="checkbox" ng-model="item.done"> <span ng-bind="item.text"></span>
+            </div>
+            <p><button ng-click="remove()">Remove Items</button> </p>
+
+        </div>
+        <script>
+            var app = angular.module('myApp', []);
+            app.controller('todoCtrl', function ($scope) {
+                $scope.todoList = [{ text: 'Make your list', done: false }];
+                $scope.doneList = [{}];
+
+                $scope.todoAdd = function () {
+                    $scope.todoList.push({ text: $scope.todoInput, done: false });
+                    $scope.todoInput = "";
+                };
+
+                $scope.remove = function () {
+                    var oldList = $scope.doneList;
+                    $scope.doneList = [];
+                    angular.forEach(oldList, function (x) {
+                        if (!x.done) $scope.doneList.push(x);
+                    });
+                };
+
+                $scope.move = function () {
+                    var oldList = $scope.todoList;
+                    $scope.todoList = [];
+                    angular.forEach(oldList, function (x) {
+
+                        if (!x.done) $scope.todoList.push(x)
+                        else {
+                            x.done = false;
+                            $scope.doneList.push(x);
+                        };
+
+                    });
+
+
+                };
+            });
+        </script>
+
+</body>
+</html>
